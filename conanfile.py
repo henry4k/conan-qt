@@ -31,7 +31,7 @@ class QtConan(ConanFile):
     """ Qt Conan package """
 
     name = "Qt"
-    version = "5.8.0"
+    version = "5.10.1"
     description = "Conan.io package for Qt library."
     source_dir = "qt5"
     settings = "os", "arch", "compiler", "build_type"
@@ -52,7 +52,7 @@ class QtConan(ConanFile):
         "openssl": ["no", "yes", "linked"]
     }
     default_options = "shared=True", "opengl=desktop", "canvas3d=False", "gamepad=False", "graphicaleffects=False", "imageformats=False", "location=False", "serialport=False", "svg=False", "tools=False", "webengine=False", "websockets=False", "xmlpatterns=False", "openssl=no"
-    url = "http://github.com/osechet/conan-qt"
+    url = "http://github.com/sogilis/conan-qt"
     license = "http://doc.qt.io/qt-5/lgpl.html"
     short_paths = True
 
@@ -166,9 +166,9 @@ class QtConan(ConanFile):
         self.output.info("Using '%s %s' to build" % (build_command, " ".join(build_args)))
 
         env = {}
-        env.update({'PATH': ['%s/qtbase/bin' % self.conanfile_directory,
-                             '%s/gnuwin32/bin' % self.conanfile_directory,
-                             '%s/qtrepotools/bin' % self.conanfile_directory]})
+        env.update({'PATH': ['%s/qtbase/bin' % self.source_folder,
+                             '%s/gnuwin32/bin' % self.source_folder,
+                             '%s/qtrepotools/bin' % self.source_folder]})
         # it seems not enough to set the vcvars for older versions
         if self.settings.compiler == "Visual Studio":
             if self.settings.compiler.version == "14":
@@ -211,10 +211,10 @@ class QtConan(ConanFile):
 
     def _build_mingw(self, args):
         env_build = AutoToolsBuildEnvironment(self)
-        env = {'PATH': ['%s/bin' % self.conanfile_directory,
-                        '%s/qtbase/bin' % self.conanfile_directory,
-                        '%s/gnuwin32/bin' % self.conanfile_directory,
-                        '%s/qtrepotools/bin' % self.conanfile_directory],
+        env = {'PATH': ['%s/bin' % self.source_folder,
+                        '%s/qtbase/bin' % self.source_folder,
+                        '%s/gnuwin32/bin' % self.source_folder,
+                        '%s/qtrepotools/bin' % self.source_folder],
                'QMAKESPEC': 'win32-g++'}
         env.update(env_build.vars)
         with tools.environment_append(env):
